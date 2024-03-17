@@ -1,4 +1,4 @@
-import 'package:flutter_ornek/models/questions_model.dart';
+import 'package:quiz_app/models/questions_model.dart';
 
 const questions = [
   Question(

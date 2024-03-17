@@ -48,6 +48,14 @@ class _QuizAppState extends State<QuizApp> {
     }
   }
 
+  void _previousQuestion() {
+    if (_currentIndex > 0) {
+      setState(() {
+        _currentIndex--;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -103,6 +111,27 @@ class _QuizAppState extends State<QuizApp> {
                       child: Text(answer)),
                 );
               }).toList(),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                if (_currentIndex > 0)
+                  ElevatedButton(
+                    onPressed: _previousQuestion,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: _appButtonBackgroundColor,
+                    ),
+                    child: const Text('Önceki Soru'),
+                  ),
+                if (_currentIndex < questions.length - 1)
+                  ElevatedButton(
+                    onPressed: _nextQuestion,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: _appButtonBackgroundColor,
+                    ),
+                    child: const Text('Sonraki Soru'),
+                  ),
+              ],
             ),
           ],
         ),

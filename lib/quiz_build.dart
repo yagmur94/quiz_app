@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'dart:math';
 import 'package:quiz_app/data/questions.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:quiz_app/models/questions_model.dart';
 
 // app color changes except result page!
 
@@ -19,9 +21,18 @@ class _QuizAppState extends State<QuizApp> {
   int _wrongAnswer = 0;
   int _currentIndex = 0;
 
+  // immutable oldugu icin List.from kullanıp listenin kopyasını olusturarak onun uzerinde işlem yapıyoruz.
+  final List<Question> _questions = List<Question>.from(questions); 
+
+  @override
+  void initState() {
+    super.initState();
+    _questions.shuffle(); // Soruları karıştır
+  }
+
   void _checkAnswer(String userAnswer) {
     setState(() {
-      String correctAnswer = questions[_currentIndex].correctAnswer;
+      String correctAnswer = _questions[_currentIndex].correctAnswer;
 
       if (userAnswer == correctAnswer) {
         _correctAnswer++;
@@ -33,7 +44,7 @@ class _QuizAppState extends State<QuizApp> {
   }
 
   void _nextQuestion() {
-    if (_currentIndex == questions.length - 1) {
+    if (_currentIndex == _questions.length - 1) {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
@@ -88,7 +99,7 @@ class _QuizAppState extends State<QuizApp> {
                 child: Padding(
                   padding: const EdgeInsets.only(top: 40),
                   child: Text(
-                    "${_currentIndex + 1}.${questions[_currentIndex].question}",
+                    "${_currentIndex + 1}.${_questions[_currentIndex].question}",
                     style: GoogleFonts.signika(
                         fontSize: 20,
                         fontWeight: FontWeight.w500,
@@ -99,7 +110,7 @@ class _QuizAppState extends State<QuizApp> {
               ),
             ),
             Column(
-              children: questions[_currentIndex].answers.map((answer) {
+              children: _questions[_currentIndex].answers.map((answer) {
                 return Container(
                   padding: const EdgeInsets.all(2),
                   width: 350,
